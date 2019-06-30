@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course/pages/products.dart';
 
 import './product_create.dart';
 import './product_list.dart';
