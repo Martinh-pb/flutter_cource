@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_cource/widgets/ui_elements/text_oswald_grey.dart';
-import 'package:flutter_cource/widgets/ui_elements/title_default.dart';
+import 'package:flutter_course/widgets/ui_elements/text_oswald_grey.dart';
+import 'package:flutter_course/widgets/ui_elements/title_default.dart';
 
 class ProductPage extends StatelessWidget {
   final String title;

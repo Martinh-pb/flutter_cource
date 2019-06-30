@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cource/widgets/products/address_tag.dart';
-import 'package:flutter_cource/widgets/ui_elements/title_default.dart';
+import 'package:flutter_course/widgets/products/address_tag.dart';
+import 'package:flutter_course/widgets/ui_elements/title_default.dart';
 
 import 'price_tag.dart';
 

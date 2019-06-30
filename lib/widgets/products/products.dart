@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cource/widgets/products/product_card.dart';
+import 'package:flutter_course/widgets/products/product_card.dart';
 
 class Products extends StatelessWidget {
   final List<Map<String, dynamic>> products;
