@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class ProductListPage extends StatelessWidget {
   final Function deleteProduct;
-
-  ProductListPage(this.deleteProduct);
+  final List<Map<String, dynamic>> products;
+  
+  ProductListPage(this.deleteProduct, this.products);
   
   @override
   Widget build(BuildContext context) {
