@@ -8,9 +8,13 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String _emailValue;
-  String _passwordValue;
-  bool _acceptTerms = false;
+  final Map<String, dynamic> _formData = {
+    'email': null,
+    'password': null,
+    'acceptTerms':false
+  };
+
+  GlobalKey<FormState> _formState = GlobalKey<FormState>();
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -22,37 +26,46 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget _buildEmailTextField() {
-    return TextField(
+    return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           labelText: 'E-Mail', filled: true, fillColor: Colors.white),
-      onChanged: (value) {
-        setState(() {
-          _emailValue = value;
-        });
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'E-Mail is required and should be a valid e-mail address.';
+        }
+      },
+      onSaved: (value) {
+        _formData['email'] = value;
       },
     );
   }
 
   Widget _buildPasswordTextField() {
-    return TextField(
+    return TextFormField(
       obscureText: true,
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
-      onChanged: (value) {
-        setState(() {
-          _passwordValue = value;
-        });
+      validator: (String value) {
+        if (value.isEmpty || value.length < 6) {
+          return 'Password is not valid.';
+        }
+      },
+      onSaved: (value) {
+        _formData['password'] = value;
       },
     );
   }
 
   Widget _buildAcceptTermsSwitchListTile() {
     return SwitchListTile(
-      value: _acceptTerms,
+      value: _formData['acceptTerms'],
+      subtitle: _formData['acceptTerms'] ? Text("") : Text("You must accept the terms"),
       onChanged: (bool value) {
         setState(() {
-          _acceptTerms = value;
+          _formData['acceptTerms'] = value;
         });
       },
       title: Text("Accept terms"),
@@ -60,8 +73,11 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void _submitForm() {
-    print(_emailValue);
-    print(_passwordValue);
+    if (!_formState.currentState.validate() || !_formData['acceptTerms']) {
+      return;
+    }
+    _formState.currentState.save();
+
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -82,22 +98,25 @@ class _AuthPageState extends State<AuthPage> {
           child: SingleChildScrollView(
             child: Container(
               width: targetWidth,
-              child: Column(
-                children: <Widget>[
-                  _buildEmailTextField(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  _buildPasswordTextField(),
-                  _buildAcceptTermsSwitchListTile(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  RaisedButton(                      
-                      textColor: Colors.white,
-                      onPressed: _submitForm,
-                      child: Text("LOGIN")),
-                ],
+              child: Form(
+                key: _formState,
+                child: Column(
+                  children: <Widget>[
+                    _buildEmailTextField(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    _buildPasswordTextField(),
+                    _buildAcceptTermsSwitchListTile(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    RaisedButton(
+                        textColor: Colors.white,
+                        onPressed: _submitForm,
+                        child: Text("LOGIN")),
+                  ],
+                ),
               ),
             ),
           ),
